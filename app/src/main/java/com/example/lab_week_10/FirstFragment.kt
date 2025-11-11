@@ -26,24 +26,15 @@ class FirstFragment : Fragment() {
         prepareViewModel()
     }
 
-    private fun updateText(total: Int) {
+    private fun updateText(total: Int, date: String) {
         view?.findViewById<TextView>(R.id.text_total)?.text =
             getString(R.string.text_total, total)
     }
 
-    private fun prepareViewModel(){
-        val viewModel =
-            ViewModelProvider(requireActivity()).get(TotalViewModel::class.java)
-// Observe the LiveData object
-        viewModel.total.observe(viewLifecycleOwner, {
-// Whenever the value of the LiveData object changes
-// the updateText() is called, with the new value as the parameter
-            updateText(it)
+    private fun prepareViewModel() {
+        val viewModel = ViewModelProvider(requireActivity()).get(TotalViewModel::class.java)
+        viewModel.total.observe(viewLifecycleOwner, { totalObject ->
+            updateText(totalObject.value, totalObject.date)
         })
-    }
-
-    companion object {
-        fun newInstance(param1: String, param2: String) =
-            FirstFragment()
     }
 }
